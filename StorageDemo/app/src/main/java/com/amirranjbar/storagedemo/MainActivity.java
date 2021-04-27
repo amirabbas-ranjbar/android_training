@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,12 +18,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity {
 
     ListView lstNotes;
     static ArrayList<String> notes = new ArrayList<String>();
     static ArrayAdapter arrayAdapter;
+    SharedPreferences sharedPreferences;
 
     public void findElements() {
         lstNotes = (ListView) findViewById(R.id.lstNotes);
@@ -37,7 +41,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findElements();
-        notes.add("example note");
+
+        sharedPreferences = getApplicationContext().getSharedPreferences("com.amirranjbar.storagedemo", Context.MODE_PRIVATE);
+        HashSet<String> set = (HashSet<String>) sharedPreferences.getStringSet("notes", null);
+        if (set == null) {
+            notes.add("example note");
+        }else   {
+            notes= new ArrayList(set);
+        }
         loadLstnotes(notes);
         lstNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -60,11 +71,13 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 notes.remove(itemToDelete);
                                 arrayAdapter.notifyDataSetChanged();
+
+                                HashSet<String> set = new HashSet<>(MainActivity.notes);
+                                sharedPreferences.edit().putStringSet("notes", set).apply();
                             }
                         })
-                .setNegativeButton("no",null)
-                .show();
-
+                        .setNegativeButton("no", null)
+                        .show();
 
 
                 return false;
