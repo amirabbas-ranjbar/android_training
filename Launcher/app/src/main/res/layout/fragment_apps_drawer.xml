@@ -8,9 +8,24 @@
     android:layout_height="match_parent"
     tools:context="com.amirranjbar.launcher.MainActivity">
 
-    <FrameLayout
+    <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="#FFF"
         android:layout_width="match_parent"
-        android:id="@+id/container"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/appDrawer_recylerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
 
 </RelativeLayout>
