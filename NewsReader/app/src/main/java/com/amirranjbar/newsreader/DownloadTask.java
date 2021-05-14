@@ -40,4 +40,11 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
 
         return null;
     }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        //MainActivity mainActivity= new MainActivity();
+        //mainActivity.updateListView();
+    }
 }
